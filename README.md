@@ -35,8 +35,8 @@ mini_projet_front
 
 ## Installation
 
-git clone https://github.com/ton-utilisateur/mini_projet_front.git
-cd mini_projet_front
+- git clone https://github.com/OumyLayelay1/mini_projet_front.git
+- cd mini_projet_front
 - Installer les dépendances :
 npm install
 - Configurer les variables d'environnement
