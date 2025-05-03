@@ -1,0 +1,13 @@
+{
+    "links" : [
+        {   "id" : "1",
+            "text" : "Produits",
+            "lien" : "#produits"
+        },
+        {
+            "id" : "2",
+            "text" : "Utilisateurs",
+            "lien" : "#utilisateurs"
+        }
+    ]
+}

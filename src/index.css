@@ -1,0 +1,39 @@
+.navMenu, .title{
+  color: #010101 !important;
+}
+.navConnexion{
+  border: 1px solid #FFC20F !important;
+  border-radius: 5px;
+}
+.navInscription{
+  border: 1px solid #FFC20F !important;
+  border-radius: 5px;
+  background-color: #FFC20F !important;
+}
+.containAccueil{
+  padding-top: 5%;
+}
+.containDetailProduit{
+  padding-top: 11%;
+}
+.imageCarousel{
+  min-height: 400px;
+  max-height: 400px;
+  max-width: 100%;
+  min-width: 100%;
+}
+.containLogoFoot{
+  width: 10%;
+}
+.bg-footer{
+  background-color: #FFC20F;
+}
+.containLinkCard{
+  text-decoration: none !important;
+}
+.pointerEvents{
+  pointer-events: none;
+}
+.containImageDetailProduit{
+  width: 35rem;
+}
