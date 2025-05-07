@@ -8,6 +8,10 @@ import CarouselComponent from "../components/CarouselComponent";
 import Card from "../components/Card";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import Nodata from "../components/Nodata";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const slides = [
   { id: "1", image: slide2 },
@@ -16,7 +20,6 @@ export const slides = [
 ];
 
 const apiUrl = import.meta.env.VITE_API;
-const imageUrl = import.meta.env.VITE_URL_IMAGE;
 
 const Accueil = () => {
   const token = localStorage.getItem("token");
@@ -32,27 +35,47 @@ const Accueil = () => {
   const isAuthenticated = !!token;
   const userRole = user?.role ?? null;
   const [produits, setProduits] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`${apiUrl}/api/produits`)
-      .then((res) => {
-        setProduits(res.data);
-      })
-      .catch((err) => {
-        console.error("Erreur lors de la récupération des produits :", err);
-      });
-  }, []);
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`${apiUrl}/api/users`)
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch((err) => {
-        console.error("Erreur lors de la récupération des produits :", err);
-      });
+    const fetchProduits = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/produits`);
+        if (Array.isArray(response.data)) {
+          setProduits(response.data);
+        } else {
+          console.warn("Réponse inattendue de l'API :", response.data);
+          setProduits([]);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des produits :", error);
+        setProduits([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchProduits();
+  }, []);  
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/users`);
+        if (Array.isArray(response.data)) {
+          setUsers(response.data);
+        } else {
+          console.warn("Réponse inattendue de l'API :", response.data);
+          setUsers([]);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des produits :", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUsers();
   }, []);
 
   return (
@@ -78,41 +101,37 @@ const Accueil = () => {
             {(() => {
               const userData = localStorage.getItem("user");
               const user = userData ? JSON.parse(userData) : null;
+              const produitsFiltres = Array.isArray(produits)
+              ? produits.filter((produit) => {
+                  if (!user) return true;
+                  if (user.role === "admin") return true;
+                  if (user.role === "user") {
+                    return produit.user === user.id;
+                  }
+                  return false;
+                })
+              : [];
 
-              // Filtrage des produits selon le rôle
-              const produitsFiltres = produits.filter((produit) => {
-                if (!user) return true; // non connecté = voir tous les produits
-                if (user.role === "admin") return true; // admin = voir tous les produits
-                if (user.role === "user") {
-                  const match = produit.user === user.id;
-                  return match; // user = voir ses produits uniquement
-                }
-                return false;
-              });
-
-              if (produitsFiltres.length === 0) {
-                return (
-                  <p className="text-center fs-5 text-muted">
-                    Aucun produit disponible.
-                  </p>
-                );
-              }
-
-              return produitsFiltres.map((produit) => (
-                <Card
-                  key={produit?.id}
-                  Image={`${imageUrl}/uploads/${produit?.image}`}
-                  alt="Une image"
-                  Titre={produit?.title}
-                  Prix={`${produit?.prix} FCFA`}
-                  Description={produit?.description}
-                  lien={`/${produit?._id}/detailProduit`}
-                />
-              ));
+              return isLoading ? (
+                <Spinner />
+              ) : produitsFiltres.length === 0 ? (
+                <Nodata/>
+              ) : (
+                produitsFiltres.map((produit) => (
+                  <Card
+                    key={produit?._id}
+                    Image={produit?.image}
+                    alt="Une image"
+                    Titre={produit?.title}
+                    Prix={`${produit?.prix} FCFA`}
+                    Description={produit?.description}
+                    lien={`/${produit?._id}/detailProduit`}
+                  />
+                ))
+              );
             })()}
           </div>
         </div>
-
         <div id="utilisateurs">
           {isAuthenticated && userRole === "admin" && (
             <div className="container pt-4">
@@ -120,21 +139,28 @@ const Accueil = () => {
                 Nos utilisateurs
               </h1>
               <div className="row mb-5 pt-5">
-                {users.map((user) => (
-                  <Card
-                    key={user?.id}
-                    Titre={`${user?.firstName} ${user?.lastName}`}
-                    Description={user?.email}
-                    number={user?.number}
-                    profession={user?.profession}
-                    className={"pointerEvents"}
-                  />
-                ))}
+                {isLoading ? (
+                  <Spinner />
+                ) : users.length === 0 ? (
+                  <Nodata/>
+                ) : (
+                  users.map((user) => (
+                    <Card
+                      key={user?.id}
+                      Titre={`${user?.firstName} ${user?.lastName}`}
+                      Description={user?.email}
+                      number={user?.number}
+                      profession={user?.profession}
+                      lien={`/${user?._id}/detailUser`}
+                    />
+                  ))
+                )}
               </div>
             </div>
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

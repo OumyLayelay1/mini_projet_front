@@ -9,6 +9,8 @@ import { FaSpinner } from "react-icons/fa";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   const apiUrl = import.meta.env.VITE_API;
@@ -26,6 +28,7 @@ const Register = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef();
+   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,17 +165,30 @@ const Register = () => {
               {formErrors.number && (
                 <p className="text-danger fw-bold">{formErrors.number}</p>
               )}
+               <div className="position-relative">
               <Input
                 Placeholder="*********"
-                Type="password"
+                Type={showPassword ? "text" : "password"}
                 Name="password"
                 Id="password"
                 Htmlfor="password"
                 Label="Mot de passe"
                 Value={formValues.password}
                 Onchange={handleChange}
-                Classname="borde"
+                Classname="borde w-100"
               />
+             <div className="d-flex justify-content-end p-2">
+             <span
+                            className="position-absolute eyes"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                          >
+                            {showPassword ? <FaEye /> : <FaEyeSlash />}
+                          </span>
+             </div>
+              </div>
               {formErrors.password && (
                 <p className="text-danger fw-bold">{formErrors.password}</p>
               )}

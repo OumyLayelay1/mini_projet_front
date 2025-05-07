@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Card({ Titre, Prix, Image, Description, profession, number, lien, className, alt }) {
   return (
-    <div className="col-md-6 col-lg-3 col-sm-6 col-xs-12">
+    <div className="col-md-6 col-lg-3 col-sm-6 col-xs-12 responsiveDetailProduit">
       <Link to={lien} className={`containLinkCard ${className}`}>
       <div className="h-100 card border-0">
         <div className="h-100 d-flex flex-column justify-content-between">

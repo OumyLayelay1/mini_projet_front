@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../components/Bouton";
 import "../index.css";
 
-function CardDetailProduit({ Titre, Description, Prix }) {
+function CardDetailProduit({ Titre, Description, Prix , Desc}) {
   return (
     <div className="">
       <div className="">
@@ -15,6 +15,7 @@ function CardDetailProduit({ Titre, Description, Prix }) {
           <div className="card-body p-0">
             <div className="">
               <p className="text-justify pb-5 mb-0">{Description}</p>
+              <p className="text-justify pb-5 mb-0">{Desc}</p>
             </div>
           </div>
           <div className="card-footer p-0 pb-5 border-0">
@@ -28,6 +29,7 @@ function CardDetailProduit({ Titre, Description, Prix }) {
                 Padding="14px 53px"
                 BorderRadius="8px"
                 DisplayNone1="none"
+                boutonheader={"pointerEvents"}
               />
             </div>
           </div>

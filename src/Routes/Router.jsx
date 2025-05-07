@@ -8,6 +8,7 @@ import Login from "../Pages/Login"
 import Register from "../Pages/Register"
 import AjoutProduit from "../Pages/AjoutProduit"
 import ModifationProduit from '../Pages/ModifationProduit'
+import DetailUser from '../Pages/DetailUser'
 
 
 function Router() {
@@ -53,6 +54,10 @@ function Router() {
                     path: ":id/modificationProduit",
                     element: <ModifationProduit/>,
         
+                },
+                {
+                    path: ":id/detailUser",
+                    element: <DetailUser/>
                 }
             ]
 

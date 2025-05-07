@@ -9,17 +9,19 @@ import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import Nodata from "../components/Nodata";
 import Card from "../components/Card";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiUrl = import.meta.env.VITE_API;
 
-function DetailProduit() {
+function DetailUser() {
   const { id } = useParams();
-  const [produit, setProduit] = useState(null);
+  const [useer, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const userData = localStorage.getItem("user");
   const navigate = useNavigate();
+console.log({useer});
 
   let user = null;
   try {
@@ -48,46 +50,32 @@ console.log({user});
   // }, [id]);
 
   useEffect(() => {
-    const fetchProduit = async () => {
+    const fetchUser = async () => {
       try {
-        const res = await axios.get(`${apiUrl}/api/produits/${id}`);
-        setProduit(res.data);
+        const res = await axios.get(`${apiUrl}/api/users/${id}`);
+        setUser(res.data);
       } catch (error) {
         console.error("Erreur lors du chargement des produits :", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchProduit();
+    fetchUser();
   }, [id]);
-    useEffect(() => {
-    const fetchProduit = async () => {
-      try {
-        const res = await axios.get(`${apiUrl}/api/produits/${id}`);
-        setProduit(res.data);
-      } catch (error) {
-        console.error("Erreur lors du chargement des produits :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduit();
-  }, [id]);
-
   const handleDelete = async () => {
-    if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
+    if (!window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) return;
 
     try {
-      await axios.delete(`${apiUrl}/api/produits/delete/${id}`, {
+      await axios.delete(`${apiUrl}/api/users/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success("Produit supprimé avec succès.", { position: "top-left" });
+      toast.success("Utilisateur supprimé avec succès.",  { position: "top-left" });
       navigate("/"); // ou navigate(-1) pour revenir à la page précédente
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
-      toast("Erreur lors de la suppression du produit.");
+      toast("Erreur lors de la suppression de l'utilisateur.");
     }
   };
 
@@ -96,27 +84,16 @@ console.log({user});
       <ToastContainer/>
       <div className="row justify-content-between align-items-center">
       <div className="col-md-10">
-      {/* {(userRole === "admin") && (
-  <Card
-    key={user?.id}
-    Titre={`${user?.firstName} ${user?.lastName}`}
-    Description={`Email: ${user?.email}`}
-    number={`Téléphone: +221${user?.number}`}
-    className={"pointerEvents"}
-  />
-)} */}
       </div>
-        <div className="col-md-2">
-          {isAuthenticated && userRole === "user" && (
-            <div className="d-flex justify-content-end p-4 responsivePadding">
+      <div className="d-flex justify-content-end p-4 responsivePadding">
               <div className="d-flex gap-3">
-                <Nav.Link
+                {/* <Nav.Link
                   as={Link}
-                  to={`/${produit?._id}/modificationProduit`}
+                  to={`/${useer?._id}/modificationProduit`}
                   className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
                 >
                   Modifier
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                   as={Link}
                   onClick={handleDelete}
@@ -127,42 +104,21 @@ console.log({user});
                 </Nav.Link>
               </div>
             </div>
-          )}
-          {isAuthenticated && userRole === "admin" && (
-            <div className="d-flex justify-content-end p-4 responsivePadding">
-              <div className="d-flex gap-3">
-                <Nav.Link
-                  as={Link}
-                  onClick={handleDelete}
-                  to="/ajoutProduit"
-                  className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
-                >
-                  Supprimer
-                </Nav.Link>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
       {loading ? (
         <Spinner />
-      ) : !produit ? (
+      ) : !useer ? (
         <Nodata />
       ) : (
-        <div className="row align-items-center">
-          <div className="col-md-6 responsiveDetailProduit">
-            <CardDetailProduit
-              Titre={produit?.title}
-              Description={produit?.description}
-              Prix={produit?.prix}
-            />
-          </div>
-          <div className="col-md-6 responsiveDetailProduit">
-            <img
-              src={produit?.image}
-              alt="Image du produit"
-              className="containImageDetailProduit"
-            />
+        <div className=" align-items-center">
+          <div className="responsiveDetailProduit">
+          <Card
+                      Titre={`${useer?.firstName} ${useer?.lastName}`}
+                      Description={useer?.email}
+                      number={useer?.number}
+                      profession={useer?.profession}
+                      className={"pointerEvents"}
+                    />
           </div>
         </div>
       )}
@@ -170,4 +126,4 @@ console.log({user});
   );
 }
 
-export default DetailProduit;
+export default DetailUser;
