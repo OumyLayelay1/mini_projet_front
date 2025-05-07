@@ -55,8 +55,10 @@ npm run preview
 - Déconnexion
 - Ajout produit
 - Détail produit
+- Détail user
 - Modifier produit
-- Supprimer
+- Supprimer produit
+- Supprimer utilisateur
 - Liste utilisateur
 # Authentification
 Le token d'authentification est stocké dans le localStorage sous la clé "token".
