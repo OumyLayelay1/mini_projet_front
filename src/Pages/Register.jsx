@@ -1,95 +1,24 @@
-import React, { useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import Input from "../components/Input";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Bouton from "../components/Bouton";
-import { toast, ToastContainer } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
+import useAuth from "../hooks/useAuth";
 
 const Register = () => {
-  const apiUrl = import.meta.env.VITE_API;
-  const navigate = useNavigate();
-  const initialValues = {
-    lastName: "",
-    firstName: "",
-    email: "",
-    number: "",
-    profession: "",
-    password: "",
-  };
 
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const formRef = useRef();
-   const [showPassword, setShowPassword] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const resetForm = () => {
-    setFormValues(initialValues);
-    formRef.current?.reset();
-  };
-
-  const validate = (values) => {
-    let errors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const phoneRegex = /^\+?\d{9,15}$/;
-
-    if (!values.lastName || values.lastName.length < 2) {
-      errors.lastName = "Mettez votre nom.";
-    }
-    if (!values.firstName || values.firstName.length < 2) {
-      errors.firstName = "Mettez votre prénom.";
-    }
-    if (!values.email || !emailRegex.test(values.email)) {
-      errors.email = "Le format de l'email est invalide.";
-    }
-    if (!values.number || !phoneRegex.test(values.number)) {
-      errors.number = "Numéro de téléphone incorrect.";
-    }
-    if (!values.password || values.password.length < 8) {
-      errors.password = "Mot de passe trop court (min. 8 caractères).";
-    }
-    if (!values.profession || values.profession.length < 2) {
-      errors.profession = "Indiquez votre profession.";
-    }
-
-    return errors;
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const errors = validate(formValues);
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      try {
-        const response = await axios.post(`${apiUrl}/api/auth/register`, formValues);
-        toast.success("Inscription réussie !", { position: "bottom-left" });
-        resetForm();
-        navigate("/login");
-      } catch (error) {
-        console.error(error);
-        toast.error("Erreur lors de l'inscription.", {
-          position: "bottom-left",
-        });
-      }
-    }
-
-    setIsSubmitting(false);
-  };
+  const { formErrors,
+    isSubmitting,
+    setShowPassword,
+    showPassword,
+    handleChange,
+    handleFormSubmit,
+    formRef, formValues } = useAuth();
 
   return (
     <section id="register">
@@ -165,29 +94,29 @@ const Register = () => {
               {formErrors.number && (
                 <p className="text-danger fw-bold">{formErrors.number}</p>
               )}
-               <div className="position-relative">
-              <Input
-                Placeholder="*********"
-                Type={showPassword ? "text" : "password"}
-                Name="password"
-                Id="password"
-                Htmlfor="password"
-                Label="Mot de passe"
-                Value={formValues.password}
-                Onchange={handleChange}
-                Classname="borde w-100"
-              />
-             <div className="d-flex justify-content-end p-2">
-             <span
-                            className="position-absolute eyes"
-                            onClick={() => setShowPassword(!showPassword)}
-                            style={{
-                              cursor: "pointer",
-                            }}
-                          >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
-                          </span>
-             </div>
+              <div className="position-relative">
+                <Input
+                  Placeholder="*********"
+                  Type={showPassword ? "text" : "password"}
+                  Name="password"
+                  Id="password"
+                  Htmlfor="password"
+                  Label="Mot de passe"
+                  Value={formValues.password}
+                  Onchange={handleChange}
+                  Classname="borde w-100"
+                />
+                <div className="d-flex justify-content-end p-2">
+                  <span
+                    className="position-absolute eyes"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
               </div>
               {formErrors.password && (
                 <p className="text-danger fw-bold">{formErrors.password}</p>

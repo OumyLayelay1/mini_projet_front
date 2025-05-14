@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "../index.css";
 import slide1 from "../assets/Images/shop.jpeg";
 import slide2 from "../assets/Images/shop1.jpeg";
@@ -12,6 +10,9 @@ import Spinner from "../components/Spinner";
 import Nodata from "../components/Nodata";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../hooks/useAuth";
+import useFetchProduit from "../hooks/useFetchProduit";
+import useFetchUser from "../hooks/useFetchUser";
 
 export const slides = [
   { id: "1", image: slide2 },
@@ -19,67 +20,13 @@ export const slides = [
   { id: "3", image: slide1 },
 ];
 
-const apiUrl = import.meta.env.VITE_API;
-
 const Accueil = () => {
-  const token = localStorage.getItem("token");
-  const userData = localStorage.getItem("user");
-
-  let user = null;
-  try {
-    user = userData ? JSON.parse(userData) : null;
-  } catch (e) {
-    console.error("Erreur de parsing userData:", e);
-  }
-
-  const isAuthenticated = !!token;
-  const userRole = user?.role ?? null;
-  const [produits, setProduits] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProduits = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/produits`);
-        if (Array.isArray(response.data)) {
-          setProduits(response.data);
-        } else {
-          console.warn("Réponse inattendue de l'API :", response.data);
-          setProduits([]);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des produits :", error);
-        setProduits([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
   
-    fetchProduits();
-  }, []);  
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/users`);
-        if (Array.isArray(response.data)) {
-          setUsers(response.data);
-        } else {
-          console.warn("Réponse inattendue de l'API :", response.data);
-          setUsers([]);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des produits :", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+  const { isAuthenticated, userRole } = useAuth();
+  const { isLoading, produits } = useFetchProduit();
+  const { isLoadingUser, users } = useFetchUser();
 
   return (
-    <div className="">
       <div className="">
         <div className="">
           <CarouselComponent data={slides} />
@@ -139,7 +86,7 @@ const Accueil = () => {
                 Nos utilisateurs
               </h1>
               <div className="row mb-5 pt-5">
-                {isLoading ? (
+                {isLoadingUser ? (
                   <Spinner />
                 ) : users.length === 0 ? (
                   <Nodata/>
@@ -159,9 +106,8 @@ const Accueil = () => {
             </div>
           )}
         </div>
-      </div>
       <ToastContainer />
-    </div>
+      </div>
   );
 };
 

@@ -1,95 +1,20 @@
-import React, { useEffect, useState } from "react";
 import CardDetailProduit from "../components/CardDetailProduit";
-import { useParams, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
-import axios from "axios";
 import "../index.css";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import Nodata from "../components/Nodata";
-import Card from "../components/Card";
-import { ToastContainer, toast } from "react-toastify";
-
-const apiUrl = import.meta.env.VITE_API;
+import { ToastContainer } from "react-toastify";
+import useAuth from "../hooks/useAuth";
+import useDetailProduit from "../hooks/useDetailProduit";
+import useDeleteProduit from "../hooks/useDeleteProduit";
 
 function DetailProduit() {
-  const { id } = useParams();
-  const [produit, setProduit] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
-  const userData = localStorage.getItem("user");
-  const navigate = useNavigate();
-
-  let user = null;
-  try {
-    user = userData ? JSON.parse(userData) : null;
-  } catch (e) {
-    console.error("Erreur de parsing userData:", e);
-  }
-console.log({user});
-
-  const isAuthenticated = !!token;
-  const userRole = user?.role ?? null;
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const res = await axios.get(`${apiUrl}/api/users/${id}/produits`);
-  //       setUtilisateur(res.data);
-  //       console.log("Utilisateur récupéré :", res.data);
-  //     } catch (error) {
-  //       console.error("Erreur lors du chargement des produits :", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchUser();
-  // }, [id]);
-
-  useEffect(() => {
-    const fetchProduit = async () => {
-      try {
-        const res = await axios.get(`${apiUrl}/api/produits/${id}`);
-        setProduit(res.data);
-      } catch (error) {
-        console.error("Erreur lors du chargement des produits :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduit();
-  }, [id]);
-    useEffect(() => {
-    const fetchProduit = async () => {
-      try {
-        const res = await axios.get(`${apiUrl}/api/produits/${id}`);
-        setProduit(res.data);
-      } catch (error) {
-        console.error("Erreur lors du chargement des produits :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduit();
-  }, [id]);
-
-  const handleDelete = async () => {
-    if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
-
-    try {
-      await axios.delete(`${apiUrl}/api/produits/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("Produit supprimé avec succès.", { position: "top-left" });
-      navigate("/"); // ou navigate(-1) pour revenir à la page précédente
-    } catch (error) {
-      console.error("Erreur lors de la suppression :", error);
-      toast("Erreur lors de la suppression du produit.");
-    }
-  };
+  
+  const {  userRole, isAuthenticated } = useAuth();
+  const { produit, loading } = useDetailProduit();
+  const { deleteProduit } = useDeleteProduit()  
 
   return (
     <Container className="pb-5 containDetailProduit">
@@ -119,7 +44,7 @@ console.log({user});
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
-                  onClick={handleDelete}
+                  onClick={() => deleteProduit(produit._id)}
                   to="/ajoutProduit"
                   className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
                 >
@@ -133,7 +58,7 @@ console.log({user});
               <div className="d-flex gap-3">
                 <Nav.Link
                   as={Link}
-                  onClick={handleDelete}
+                  onClick={() => deleteProduit(produit._id)}
                   to="/ajoutProduit"
                   className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
                 >
