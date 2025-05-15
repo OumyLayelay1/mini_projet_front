@@ -10,7 +10,7 @@ const useModificationProduit = () => {
   const imageBaseUrl = import.meta.env.VITE_URL_IMAGE;
   const navigate = useNavigate();
   const { id } = useParams();
-  const { token } = useAuth
+  const { token } = useAuth();
 
   const initialValues = {
     title: "",
@@ -21,15 +21,12 @@ const useModificationProduit = () => {
   };
 
   const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const token = localStorage.getItem("token");
-
         const response = await axios.get(`${PRODUITS}/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -68,25 +65,10 @@ const useModificationProduit = () => {
     }
   };
 
-  const validate = (values) => {
-    let errors = {};
-    if (!values.title || values.title.length < 2) {
-      errors.title = "Mettez le titre du produit";
-    }
-    if (!values.prix || values.prix.length < 1) {
-      errors.prix = "Mettez le prix";
-    }
-    return errors;
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const errors = validate(formValues);
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
       try {
 
         const formData = new FormData();
@@ -113,13 +95,12 @@ const useModificationProduit = () => {
           position: "top",
         });
       }
-    }
 
     setIsSubmitting(false);
     [ navigate, token ]
   };
 
-  return { formErrors, formValues, handleFormSubmit, handleChange, isSubmitting, formRef }
+  return { formValues, handleFormSubmit, handleChange, isSubmitting, formRef }
 }
 
 export default useModificationProduit

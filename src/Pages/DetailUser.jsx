@@ -9,6 +9,7 @@ import Card from "../components/Card";
 import "react-toastify/dist/ReactToastify.css";
 import useDetailUser from "../hooks/useDetailUser";
 import useDeleteUser from "../hooks/useDeleteUser";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 function DetailUser() {
   const { user, loading, userProduit, loadingProduit } = useDetailUser();
@@ -17,20 +18,21 @@ function DetailUser() {
   return (
     <Container className="pb-5 containDetailProduit">
       <ToastContainer />
+      <Link to={-1} className="fw-bold fs-1 text-dark"><IoArrowBackCircleSharp/></Link>
       <div className="row justify-content-between align-items-baseline p-4">
         <div className="col-md-2">
           <div className="responsivePadding">
             <div className="d-flex gap-3">
               <Nav.Link
                 as={Link}
-                to={`/${user?._id}/modificationProduit`}
+                to={`/${user?._id}/modificationUser`}
                 className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
               >
                 Modifier
               </Nav.Link>
               <Nav.Link
                 as={Link}
-                onClick={handleDelete}
+                onClick={() => handleDelete(user?._id)}
                 to="/ajoutProduit"
                 className="nav-link lh-lg px-4 py-1 fw-bold navMenu navInscription"
               >

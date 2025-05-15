@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import useDetailProduit from "../hooks/useDetailProduit";
 import useDeleteProduit from "../hooks/useDeleteProduit";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 function DetailProduit() {
   
@@ -21,15 +22,7 @@ function DetailProduit() {
       <ToastContainer/>
       <div className="row justify-content-between align-items-center">
       <div className="col-md-10">
-      {/* {(userRole === "admin") && (
-  <Card
-    key={user?.id}
-    Titre={`${user?.firstName} ${user?.lastName}`}
-    Description={`Email: ${user?.email}`}
-    number={`Téléphone: +221${user?.number}`}
-    className={"pointerEvents"}
-  />
-)} */}
+        <Link to={-1} className="fw-bold fs-1 text-dark"><IoArrowBackCircleSharp/></Link>
       </div>
         <div className="col-md-2">
           {isAuthenticated && userRole === "user" && (

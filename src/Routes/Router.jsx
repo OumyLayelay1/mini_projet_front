@@ -8,6 +8,7 @@ import Register from "../Pages/Register";
 import AjoutProduit from "../Pages/AjoutProduit";
 import ModifationProduit from "../Pages/ModifationProduit";
 import DetailUser from "../Pages/DetailUser";
+import ModifationUser from "../Pages/ModifationUser";
 
 function Router() {
   const Layout = () => {
@@ -53,6 +54,10 @@ function Router() {
           path: ":id/detailUser",
           element: <DetailUser />,
         },
+         {
+          path: ":id/modificationUser",
+          element: <ModifationUser />,
+        }
       ],
     },
   ]);

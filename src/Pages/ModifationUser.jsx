@@ -5,68 +5,86 @@ import Bouton from "../components/Bouton";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSpinner } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
-import useModificationProduit from "../hooks/useModificationProduit";
+import useModificationUser from "../hooks/useModificationUser";
 
-const ModifationProduit = () => {
+const ModifationUser = () => {
   const {
     formValues,
     handleFormSubmit,
     handleChange,
     isSubmitting,
     formRef,
-  } = useModificationProduit();
+  } = useModificationUser();
 
   return (
     <section id="register">
       <div className="container py-5">
-        <h1 className="text-center pb-3 pt-5">Modification d'un produit</h1>
+        <h1 className="text-center pb-3 pt-5">Modification d'un utilisateur</h1>
         <div className="d-flex justify-content-center">
           <div
             className="shadow rounded-3 p-4 w-100"
             style={{ maxWidth: "600px" }}
           >
             <Form ref={formRef} onSubmit={handleFormSubmit}>
-              <Input
+               <Input
                 Type="text"
-                Name="title"
-                Id="title"
-                Htmlfor="title"
-                Label="Titre"
-                Value={formValues.title}
+                Name="firstName"
+                Id="firstName"
+                Htmlfor="firstName"
+                Label="Prénom"
+                Value={formValues.firstName}
+                Onchange={handleChange}
+                Classname="borde"
+              />
+               <Input
+                Type="text"
+                Name="lastName"
+                Id="lastName"
+                Htmlfor="lastName"
+                Label="Nom"
+                Value={formValues.lastName}
                 Onchange={handleChange}
                 Classname="borde"
               />
               <Input
-                Type="number"
-                Name="prix"
-                Id="prix"
-                Htmlfor="prix"
-                Label="Prix"
-                Value={formValues.prix}
+                Type="email"
+                Name="email"
+                Id="email"
+                Htmlfor="email"
+                Value={formValues.email}
+                Label="Email"
                 Onchange={handleChange}
                 Classname="borde"
               />
               <Input
-                Placeholder="Image"
-                Type="file"
-                Name="image"
-                Id="image"
-                Htmlfor="image"
-                Label="Nouvelle image"
+                Name="number"
+                Id="number"
+                Htmlfor="number"
+                Label="Téléphone"
+                Value={formValues.number}
                 Onchange={handleChange}
                 Classname="borde"
+                Type={"number"}
               />
               <Input
-                Placeholder="Description"
-                Name="description"
-                Id="description"
-                Htmlfor="description"
-                Label="Description"
-                Value={formValues.description}
+                Name="profession"
+                Id="profession"
+                Htmlfor="profession"
+                Label="Profession"
+                Value={formValues.profession}
                 Onchange={handleChange}
                 Classname="borde"
-                Rows={3}
-                As="textarea"
+                Type={"text"}
+              />
+              <Input
+                Name="role"
+                Id="role"
+                Htmlfor="role"
+                Label="Rôle"
+                Value={formValues.role}
+                Onchange={handleChange}
+                Classname="borde"
+                Type={"text"}
               />
               <Row>
                 <Bouton
@@ -95,4 +113,4 @@ const ModifationProduit = () => {
   );
 };
 
-export default ModifationProduit;
+export default ModifationUser;
