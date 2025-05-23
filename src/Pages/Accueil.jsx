@@ -7,7 +7,7 @@ import Card from "../components/Card";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import Nodata from "../components/Nodata";
+import { Nodata } from "../components/Nodata";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../hooks/useAuth";

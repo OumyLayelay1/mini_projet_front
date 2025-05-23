@@ -4,7 +4,7 @@ import "../index.css";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import Nodata from "../components/Nodata";
+import { Nodata, NoProject } from "../components/Nodata";
 import Card from "../components/Card";
 import "react-toastify/dist/ReactToastify.css";
 import useDetailUser from "../hooks/useDetailUser";
@@ -61,7 +61,7 @@ function DetailUser() {
        {loadingProduit ? (
   <Spinner />
 ) : !userProduit || userProduit.length === 0 ? (
-  <div className="text-center fs-4 w-100 bg-warning no-data">Cet utilisateur n’a publié aucun produit</div>
+  <NoProject/>
 ) : (
   userProduit.map((item) => (
     <Card

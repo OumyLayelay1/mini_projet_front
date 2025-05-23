@@ -4,7 +4,7 @@ import "../index.css";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import Nodata from "../components/Nodata";
+import {Nodata} from "../components/Nodata";
 import { ToastContainer } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import useDetailProduit from "../hooks/useDetailProduit";

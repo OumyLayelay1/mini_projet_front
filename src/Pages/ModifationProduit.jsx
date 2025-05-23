@@ -6,19 +6,21 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaSpinner } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import useModificationProduit from "../hooks/useModificationProduit";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const ModifationProduit = () => {
-  const {
-    formValues,
-    handleFormSubmit,
-    handleChange,
-    isSubmitting,
-    formRef,
-  } = useModificationProduit();
+  const { formValues, handleFormSubmit, handleChange, isSubmitting, formRef } =
+    useModificationProduit();
 
   return (
     <section id="register">
       <div className="container py-5">
+        <div className="pt-5">
+          <Link to={-1} className="fw-bold fs-1 text-dark">
+            <IoArrowBackCircleSharp />
+          </Link>
+        </div>
         <h1 className="text-center pb-3 pt-5">Modification d'un produit</h1>
         <div className="d-flex justify-content-center">
           <div

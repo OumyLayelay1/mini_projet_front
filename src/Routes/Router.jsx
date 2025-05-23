@@ -9,12 +9,14 @@ import AjoutProduit from "../Pages/AjoutProduit";
 import ModifationProduit from "../Pages/ModifationProduit";
 import DetailUser from "../Pages/DetailUser";
 import ModifationUser from "../Pages/ModifationUser";
+import ScrollToTop from "../components/ScrollToTop";
 
 function Router() {
   const Layout = () => {
     return (
       <>
         <NavbarMenu />
+        <ScrollToTop/>
         <Outlet />
         <Footer />
       </>
